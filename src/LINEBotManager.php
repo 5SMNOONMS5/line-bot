@@ -5,6 +5,7 @@ namespace Stephenchen\LineBot;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\Response;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 final class LINEBotManager
 {
@@ -20,8 +21,21 @@ final class LINEBotManager
 
     public function __construct()
     {
-        $token  = env('LINE_BOT_CHANNEL_ACCESS_TOKEN');
-        $secret = env('LINE_BOT_CHANNEL_SECRET');
+        $token   = env('LINE_BOT_CHANNEL_ACCESS_TOKEN');
+        $secret  = env('LINE_BOT_CHANNEL_SECRET');
+        $canSend = env('LINE_BOT_CAN_SEND');
+        $me      = env('LINE_BOT_ME_ID');
+
+        if (!$token || !$secret || empty($canSend) || !$me) {
+            throw new NotFoundResourceException('One of below keys not found in .env file
+
+            * LINE_BOT_CHANNEL_ACCESS_TOKEN
+            * LINE_BOT_CHANNEL_SECRET
+            * LINE_BOT_CAN_SEND
+            * LINE_BOT_ME_ID
+
+            ');
+        }
 
         $client = new CurlHTTPClient($token);
         $paras  = [

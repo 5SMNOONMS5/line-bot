@@ -21,9 +21,8 @@ trait LineBotTrait
     private LINEBotManager $lineBotManagerClass;
 
     /**
-     * @param string     $message
+     * @param string $message
      * @param array|null $users
-     *
      * @throws Exception
      */
     public function sendMulticast(string $message, ?array $users = NULL)
@@ -54,32 +53,12 @@ trait LineBotTrait
     }
 
     /**
-     * @param string $message
-     *
-     * @throws Exception
-     */
-    public function sendBroadcast(string $message)
-    {
-        if (!$this->canSend()) {
-            return;
-        }
-
-        $builder  = new TextMessageBuilder($message);
-        $response = $this->getLineBotManagerClass()->sendBroadcast($builder);
-
-        if ($response->getHTTPStatus() != 200) {
-            $content = $response->getJSONDecodedBody();
-            Log::error("Line API Fail Send, reason： $content");
-        }
-    }
-
-    /**
      * @throws Exception
      */
     public function canSend(): bool
     {
         if (!env('LINE_BOT_CAN_SEND')) {
-            return false;
+            return FALSE;
         }
 
         $latest   = Cache::get(self::$LINE_LATEST_SEND);
@@ -126,5 +105,24 @@ trait LineBotTrait
         }
 
         return $this->lineBotManagerClass;
+    }
+
+    /**
+     * @param string $message
+     * @throws Exception
+     */
+    public function sendBroadcast(string $message)
+    {
+        if (!$this->canSend()) {
+            return;
+        }
+
+        $builder  = new TextMessageBuilder($message);
+        $response = $this->getLineBotManagerClass()->sendBroadcast($builder);
+
+        if ($response->getHTTPStatus() != 200) {
+            $content = $response->getJSONDecodedBody();
+            Log::error("Line API Fail Send, reason： $content");
+        }
     }
 }

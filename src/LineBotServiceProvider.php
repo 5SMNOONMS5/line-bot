@@ -21,7 +21,7 @@ class LineBotServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('line-bot.php'),
+                __DIR__ . '/../config/config.php' => config_path('line-bot.php'),
             ], 'config');
 
             // Publishing the views.
@@ -50,7 +50,7 @@ class LineBotServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'line-bot');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'line-bot');
 
         // Register the main class to use with the facade
         $this->app->singleton('line-bot', function () {

@@ -4,9 +4,8 @@ namespace Stephenchen\LineBot;
 
 class LineBot
 {
-    public function echo()
+    public function echo(): string
     {
         return self::class;
     }
-    // Build your next great package.
 }
